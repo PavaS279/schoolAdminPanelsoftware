@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ShowUsers extends HttpServlet {
 	
 
-    private final static String query = "select id,name,email,mobile,dob,city,gender from user";
+    private final static String query = "select std_id, std_name, std_mobile, std_email, std_dob, std_address, std_gender, std_grade from student";
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         //get PrintWriter
@@ -22,11 +22,11 @@ public class ShowUsers extends HttpServlet {
         res.setContentType("text/html");
         //link the bootstrap
         pw.println("<link rel='stylesheet' href='css/bootstrap.css'></link>");
-        pw.println("<marquee><h2 class='text-primary'>User Data</h2></marquee>");
+        pw.println("<marquee><h2 class='text-primary'>Students Data</h2></marquee>");
         //load the JDBC driver
      
         //generate the connection
-        try(Connection con = DriverManager.getConnection("jdbc:mysql:///usermgmt","root","root");
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/schooladmin","root","tiger");
                 PreparedStatement ps = con.prepareStatement(query);){
             //resultSet
             ResultSet rs = ps.executeQuery();
@@ -35,11 +35,12 @@ public class ShowUsers extends HttpServlet {
             pw.println("<tr>");
             pw.println("<th>ID</th>");
             pw.println("<th>Name</th>");
-            pw.println("<th>Email</th>");
             pw.println("<th>Mobile No</th>");
+            pw.println("<th>Email</th>");
             pw.println("<th>DOB</th>");
-            pw.println("<th>City</th>");
+            pw.println("<th>Address</th>");
             pw.println("<th>Gender</th>");
+            pw.println("<th>Grade</th>");
             pw.println("<th>Edit</th>");
             pw.println("<th>Delete</th>");
             pw.println("</tr>");
@@ -52,8 +53,9 @@ public class ShowUsers extends HttpServlet {
                 pw.println("<td>"+rs.getString(5)+"</td>");
                 pw.println("<td>"+rs.getString(6)+"</td>");
                 pw.println("<td>"+rs.getString(7)+"</td>");
-                pw.println("<td><a href='editurl?id="+rs.getInt(1)+"'>Edit</a></td>");
-                pw.println("<td><a href='deleteurl?id="+rs.getInt(1)+"'>Delete</a></td>");
+                pw.println("<td>"+rs.getString(8)+"</td>");
+                pw.println("<td><a href='editurl?std_id="+rs.getInt(1)+"'>Edit</a></td>");
+                pw.println("<td><a href='deleteurl?std_id="+rs.getInt(1)+"'>Delete</a></td>");
                 pw.println("</tr>");
             }
             pw.println("</table>");
